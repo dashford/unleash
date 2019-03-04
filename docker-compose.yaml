@@ -1,0 +1,12 @@
+version: "3.2"
+services:
+  php:
+    build: ./docker/build/php
+    volumes:
+      - composer-cache:/root/composer/cache
+      - .:/var/www/html
+    expose:
+      - 9000
+volumes:
+  composer-cache:
+    driver: local
