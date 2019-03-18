@@ -2,6 +2,11 @@
   "name": "dashford/unleash",
   "description": "PHP client for Unleash",
   "license": "mit",
+  "config": {
+    "platform": {
+      "php": "7.3"
+    }
+  },
   "require": {
   },
   "require-dev": {
