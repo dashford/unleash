@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Dashford\Unleash;
 
+use Carbon\Carbon;
+use InvalidArgumentException;
+
 class Config
 {
     /** @var string */
@@ -24,8 +27,18 @@ class Config
     /** @var int */
     private $metricsInterval = self::DEFAULT_METRICS_INTERVAL_IN_SECONDS;
 
+    /** @var \Carbon\CarbonInterface */
+    private $startTime;
+
+    /** @var bool */
+    private $metricsEnabled = true;
+
+    /** @var string */
+    private $unleashApiUri;
+
     public function __construct()
     {
+        $this->startTime = Carbon::now('UTC');
         return $this;
     }
 
@@ -73,8 +86,45 @@ class Config
         return $this->metricsInterval;
     }
 
+    public function getStartTime(): string
+    {
+        return $this->startTime->toIso8601String();
+    }
+
+    public function enableMetrics()
+    {
+        $this->metricsEnabled = true;
+        return $this;
+    }
+
+    public function disableMetrics()
+    {
+        $this->metricsEnabled = false;
+        return $this;
+    }
+
+    public function areMetricsEnabled(): bool
+    {
+        return $this->metricsEnabled;
+    }
+
+    public function setUnleashApiUri(string $uri)
+    {
+        if (filter_var($uri, FILTER_VALIDATE_URL)) {
+            $this->unleashApiUri = $uri;
+            return $this;
+        }
+        throw new InvalidArgumentException('API URI must be a valid URI');
+    }
+
+    public function getUnleashApiUri()
+    {
+        return $this->unleashApiUri;
+    }
+
     public function build()
     {
+
         return $this;
     }
 }
