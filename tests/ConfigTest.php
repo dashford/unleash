@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dashford\Unleash\Tests;
 
 use Carbon\Carbon;
-use DomainException;
+use Assert\LazyAssertionException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Dashford\Unleash\Config;
@@ -107,7 +107,7 @@ class ConfigTest extends TestCase
 
     public function testExceptionIsThrownWhenMissingRequiredConfigParameters()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(LazyAssertionException::class);
         $config = new Config();
         $config->setAppName('test-app')
             ->build();

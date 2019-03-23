@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dashford\Unleash;
 
+use Assert\Assert;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
@@ -16,10 +17,10 @@ class Config
     const DEFAULT_METRICS_INTERVAL_IN_SECONDS = 60;
 
     /** @var string */
-    private $appName;
+    private $appName = null;
 
     /** @var string */
-    private $instanceId;
+    private $instanceId = null;
 
     /** @var string */
     private $sdkVersion = 'unleash-client-php:' . self::VERSION;
@@ -34,7 +35,7 @@ class Config
     private $metricsEnabled = true;
 
     /** @var string */
-    private $unleashApiUri;
+    private $unleashApiUri = null;
 
     public function __construct()
     {
@@ -124,7 +125,11 @@ class Config
 
     public function build()
     {
-
+        Assert::lazy()
+            ->that($this->appName, 'appName')->notNull()
+            ->that($this->instanceId, 'instanceId')->notNull()
+            ->that($this->unleashApiUri, 'unleashApiUri')->notNull()
+            ->verifyNow();
         return $this;
     }
 }
